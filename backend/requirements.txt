@@ -1,4 +1,5 @@
 google-generativeai
 requests
-fastapi
+fastapi[standard]
+pymongo[srv]
 uvicorn
