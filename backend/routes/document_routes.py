@@ -1,8 +1,8 @@
 from fastapi import APIRouter, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
-from models.documents import Document
+from backend.models.document_models import Document
 from config.database import document_collection
-from schema.schemas import list_serial, individual_serializer
+from backend.schema.document_schemas import list_serial, individual_serializer
 from bson import ObjectId
 
 router = APIRouter()

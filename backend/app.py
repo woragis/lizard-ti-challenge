@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from typing import List, Dict
 from enum import Enum
 from config.database import document_collection
-from routes.route import router
+from backend.routes.document_routes import router
 
 app = FastAPI()
 
