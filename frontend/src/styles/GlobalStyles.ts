@@ -6,6 +6,9 @@ const GlobalStyles = createGlobalStyle`
     padding: 0;
     box-sizing: border-box;
     font-family: 'Courier New', Courier, monospace;
+    outline: none;
+    text-decoration: none;
+    list-style-type: none;
   }
 `;
 

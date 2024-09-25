@@ -1,13 +1,8 @@
-import { Link } from "react-router-dom";
-import pagesData from "../../pagesData";
-import { PagesInterface } from "../../../types/pages";
+import useHeader from "./useHeader";
+import HeaderView from "./view";
 
 const Header = () => {
-  const navLinksData = pagesData;
-  const navLinks = navLinksData.map(({ name, path }: PagesInterface) => {
-    return <Link to={path}>{name}</Link>;
-  });
-  return <header>{navLinks}</header>;
+  return <HeaderView />;
 };
 
 export default Header;
