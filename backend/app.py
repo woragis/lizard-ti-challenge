@@ -1,8 +1,4 @@
-from os import environ
 from fastapi import FastAPI
-from typing import List, Dict
-from enum import Enum
-from config.database import document_collection
 from backend.routes.document_routes import router
 
 app = FastAPI()
