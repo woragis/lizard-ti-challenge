@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.main`
   min-height: calc(100vh - 50px);
+  width: 100%;
 `;
 
 export const Title = styled.h1`
@@ -20,8 +21,8 @@ export const FormContainer = styled.section`
 export const Form = styled.form`
   margin: 0 auto;
   border-radius: 10px;
-  border: 1px solid black;
-  width: 568px;
+  border: 2px solid white;
+  min-width: 368px;
   min-height: 300px;
   height: max-content;
 `;
