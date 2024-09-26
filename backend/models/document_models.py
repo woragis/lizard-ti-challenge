@@ -50,9 +50,9 @@ class Document(BaseModel):
   empresa_contratante: Empresa
   empresa_contratada: Empresa
   objeto_do_contrato: ObjetoDoContrato
-  obrigaoes_da_empresa_contratada: str
+  obrigacoes_da_empresa_contratada: str
   detalhes_financeiros: DetalhesFinanceiros
   informacoes_complementares: str
-  remuneracao_e_condicoes_de_pagamento: DetalhesDePagamento
+  detalhes_e_condicoes_de_pagamento: DetalhesDePagamento
   disposicoes_finais: str
   data_do_documento: str
