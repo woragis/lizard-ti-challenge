@@ -1,8 +1,8 @@
-def individual_serializer(document) -> dict:
+from models.document_models import Document
+
+def individual_serializer(document: Document) -> dict:
   return {
-    "id": str(document['id']),
-    'name': document['name'],
-    'description': document['description'],
+    "_id": str(document['_id']),
   }
 
 def list_serial(documents) -> list:

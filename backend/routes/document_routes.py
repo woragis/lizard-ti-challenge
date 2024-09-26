@@ -1,9 +1,13 @@
 from fastapi import APIRouter, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
-from backend.models.document_models import Document
+from models.document_models import Document
 from config.database import document_collection
-from backend.schema.document_schemas import list_serial, individual_serializer
+from schema.document_schemas import list_serial, individual_serializer
 from bson import ObjectId
+from controllers.ai_controller import send_genai_file, get_genai_json
+from controllers.files_controller import write_tmp_file, delete_tmp_file
+from controllers.time_controller import get_current_time
+import json
 
 router = APIRouter()
 
@@ -15,14 +19,11 @@ async def root():
 # Get All Documents
 @router.get('/documents')
 async def read_documents():
-  documents = list_serial(document_collection.find())
+  documents_found = document_collection.find()
+  print(documents_found.to_list())
+  documents = list_serial(documents_found)
   return documents
-
-# Read Document
-@router.get('/documents/{document_id}')
-async def read_document(document_id: str):
-  document = document_collection.find_one({"_id": ObjectId(document_id)})
-  return {"message": "document " + document_id, "document": individual_serializer(document)}
+  # return JSONResponse(status_code=200, content=documents)
 
 # Upload Document
 # Analyze data with GeminiAI
@@ -32,20 +33,25 @@ async def upload_pdf(file: UploadFile = File(...)):
     if file.content_type != 'application/pdf':
         raise HTTPException(status_code=400, detail="Invalid file type. Only PDF files are allowed.")
 
-    file_location = f"uploads/{file.filename}"
-    with open(file_location, "wb") as f:
-        f.write(await file.read())
+    time_now = get_current_time() # Get Current time to use it in filename
+    local_file_name = f"{file.filename}_{time_now}.pdf" # Concat current_time to file_name to prevent errors
+    local_file_path = f"tmp/{local_file_name}" # Concat file_name to path directory
+    await write_tmp_file(file_path=local_file_path, file=file) # Save received file to tmp directory
+    
+    genai_file = send_genai_file(local_file_path, local_file_name) # Send saved file to genai
+    # print(f"Uploaded file '{genai_file.display_name}' as: {genai_file.uri}")
+    file_json = get_genai_json(genai_file)
+    
+    document_collection.insert_one(file_json)
+    
+    # TODO -- USE MONGODB TO SAVE JSON RESPONSE FROM GENAI
+    delete_tmp_file(local_file_path)
 
-    return JSONResponse(status_code=201, content={"filename": file.filename, "file_location": file_location})
+    return JSONResponse(status_code=201, content={"message": "file was uploaded successfully" })
 
-# Update Document
-@router.put('/documents/{document_id}')
-async def read_document(document_id: str, document: Document):
-  document = document_collection.find_one_and_update({"_id": ObjectId(document_id)}, {"$set", dict(document)})
-  return {"message": "document " + document_id, "document": individual_serializer(document)}
 
 # Delete Document
-@router.delete('/documents/{document_id}')
-async def delete_document(document_id: str):
-  document_collection.find_one_and_delete({"_id": ObjectId(document_id)})
-  return {"message": "deleted document with id: " + document_id}
+@router.delete('/documents')
+async def delete_document(_id: str):
+  document_collection.find_one_and_delete({"_id": ObjectId(_id)})
+  return {"message": "deleted document with id: " + _id}
