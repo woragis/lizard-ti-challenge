@@ -18,6 +18,8 @@ export const LinkContainer = styled.li`
   list-style-type: none;
   a {
     text-decoration: none;
+    height: 100%;
+    width: 100%;
   }
   background-color: #f5f5f5;
   display: flex;

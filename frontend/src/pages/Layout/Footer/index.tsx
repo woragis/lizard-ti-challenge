@@ -1,9 +1,7 @@
+import FooterView from "./view";
+
 const Footer = () => {
-  return (
-    <div>
-      <h3>Oi</h3>
-    </div>
-  );
+  return <FooterView />;
 };
 
 export default Footer;

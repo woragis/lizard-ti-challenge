@@ -22,9 +22,11 @@ const HeaderView = () => {
   const navLinks = navLinksData.map(({ name, path }: PagesInterface) => {
     return (
       <styled.LinkContainer>
-        <Button className="shadow-md w-32 font-bold text-zinc-600">
-          <Link to={path}>{name.toLocaleUpperCase()}</Link>
-        </Button>
+        <Link to={path}>
+          <Button className="shadow-md w-32 font-bold text-zinc-600">
+            {name.toLocaleUpperCase()}
+          </Button>
+        </Link>
       </styled.LinkContainer>
     );
   });
