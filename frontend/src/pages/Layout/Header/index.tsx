@@ -1,8 +1,7 @@
-import useHeader from "./useHeader";
 import HeaderView from "./view";
 
 const Header = () => {
-  return <HeaderView {...useHeader} />;
+  return <HeaderView />;
 };
 
 export default Header;
