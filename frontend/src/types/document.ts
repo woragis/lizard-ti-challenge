@@ -12,12 +12,6 @@ export interface DocumentInterface {
 }
 
 interface Enterprise {
-  corprorate_name: string;
-  cnpj: string;
-  address: string;
-}
-
-interface Enterprise {
   corporate_name: string;
   cnpj: string;
   address: string;
