@@ -1,7 +1,8 @@
 import pagesData from "../../pagesData";
 
 const useHeader = () => {
-  const navLinksData = [pagesData[0]];
+  const navLinksData = pagesData.slice(0, 2);
+
   return { navLinksData };
 };
 
