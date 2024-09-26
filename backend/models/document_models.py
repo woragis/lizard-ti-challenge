@@ -1,58 +1,58 @@
 from pydantic import BaseModel
 
-class Enterprise(BaseModel):
-  corporate_name: str
+class Empresa(BaseModel):
+  razao_social: str
   cnpj: str
-  address: str
+  endereco: str
 
 class ObjetoDoContrato(BaseModel):
-  init_date: str
-  end_date: str
-  obligations: str
-  complete_description: str
+  data_inicial: str
+  data_final: str
+  obrigacoes: str
+  descricao_completa: str
 
-class MonetaryInformation(BaseModel):
-  value: int
-  description: str
+class InformacoesFinanceiras(BaseModel):
+  valor: int
+  descricao: str
 
-class OperatingRevenue(MonetaryInformation): pass
-class FixedExpenses(MonetaryInformation): pass
-class VariableExpenses(MonetaryInformation): pass
-class InvestmentExpenses(MonetaryInformation): pass
+class ReceitaOperacionalBruta(InformacoesFinanceiras): pass
+class GastoFixo(InformacoesFinanceiras): pass
+class GastoVariavel(InformacoesFinanceiras): pass
+class GastoManutencaoInvestimento(InformacoesFinanceiras): pass
 
-class OperatingExpense(BaseModel):
-  fixed_expenses: FixedExpenses
-  variable_expenses: VariableExpenses
-  investment_expenses: InvestmentExpenses
+class DespesaOperacional(BaseModel):
+  gasto_fixo: GastoFixo
+  gasto_variavel: GastoVariavel
+  gasto_manutencao_investimento: GastoManutencaoInvestimento
 
-class OperatingProfit(MonetaryInformation):
-  relative_percentage: float
+class LucroOperacional(InformacoesFinanceiras):
+  porcentagem_relativa: float
 
-class NetIncome(MonetaryInformation): pass
+class ResultadoLiquido(InformacoesFinanceiras): pass
 
-class FinancialDetails(BaseModel):
-  operating_revenue: OperatingRevenue # Receita Bruta
-  operating_costs: OperatingExpense # Despesas Operacionais
-  operating_profit: OperatingProfit # Lucro Operacional
-  net_income: NetIncome # Resultado Liquido
-  financial_projections: str
+class DetalhesFinanceiros(BaseModel):
+  receita_operacional_bruta: ReceitaOperacionalBruta # Receita Bruta
+  despesa_operacional: DespesaOperacional # Despesas Operacionais
+  lucro_operacional: LucroOperacional # Lucro Operacional
+  resultado_liquido: ResultadoLiquido # Resultado Liquido
+  projecao_financeira: str
 
-class PaymentDetails(BaseModel):
-  total_value: int
-  parcela_value: int
+class DetalhesDePagamento(BaseModel):
+  valor_total: int
+  valor_por_parcela: int
   parcelas: int
-  end_date: str
+  data_final: str
   multa_inicial: float
   multa_cumulativa: float
 
 
 class Document(BaseModel):
-  contracting_company: Enterprise
-  contracted_company: Enterprise
+  empresa_contratante: Empresa
+  empresa_contratada: Empresa
   objeto_do_contrato: ObjetoDoContrato
-  obligations: str
-  financial_details: FinancialDetails
-  complementary_information: str
-  payment_details: PaymentDetails
+  obrigaoes_da_empresa_contratada: str
+  detalhes_financeiros: DetalhesFinanceiros
+  informacoes_complementares: str
+  remuneracao_e_condicoes_de_pagamento: DetalhesDePagamento
   disposicoes_finais: str
-  document_date: str
+  data_do_documento: str
