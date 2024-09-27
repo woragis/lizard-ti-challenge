@@ -16,7 +16,7 @@ import { Send } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 import axios from "axios";
 
-const ReadDocument = ({
+const Document = ({
   _id,
   empresa_contratante: contracting_company,
   empresa_contratada: contracted_company,
@@ -194,4 +194,4 @@ const ReadDocument = ({
   );
 };
 
-export default ReadDocument;
+export default Document;
