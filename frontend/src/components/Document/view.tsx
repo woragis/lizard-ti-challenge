@@ -7,22 +7,14 @@ import {
 } from "@radix-ui/react-dialog";
 import { useDocumentModel } from "./model";
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Send } from "lucide-react";
 import { DialogFooter, DialogHeader } from "../ui/dialog";
+import Chat from "../Chat";
 
 export const DocumentView = ({
-  handleInputChange,
-  submitGeminiPrompt,
-  deleteDocument,
   documentProps,
-  chat,
-  inputText,
+  deleteDocument,
 }: ReturnType<typeof useDocumentModel>) => {
-  const chatComponent = chat.map((text: any) => {
-    return <p className="">{text}</p>;
-  });
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -44,29 +36,7 @@ export const DocumentView = ({
         </Card>
       </DialogTrigger>
       <DialogContent className="bg-white ml-96">
-        <div className="w-[500px] h-96 bg-red-500 absolute top-0 left-[-600px] p-5 rounded-3xl flex flex-col justify-between align-center">
-          <h1>Talk to Gemini Ai about this document</h1>
-          <hr />
-          <div className="border h-64 w-[100%]">
-            <ul>{chatComponent}</ul>
-          </div>
-          <form className="flex">
-            <Input
-              placeholder="talk to Gemini about this document"
-              className="rounded-3xl"
-              value={inputText}
-              onChange={handleInputChange}
-            />
-            <Button
-              size={"icon"}
-              variant={"secondary"}
-              onClick={submitGeminiPrompt}
-            >
-              <Send />
-            </Button>
-          </form>
-        </div>
-
+        <Chat _id={documentProps._id} />
         <DialogHeader>
           <DialogTitle className="text-zinc-800">
             Document {documentProps._id}
