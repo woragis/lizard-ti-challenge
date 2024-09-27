@@ -17,10 +17,10 @@ export const ChatView = ({
     );
   });
   return (
-    <div className="w-[500px] h-96 bg-red-500 absolute top-0 left-[-600px] p-5 rounded-3xl flex flex-col justify-between align-center">
+    <div className="w-[500px] h-[500px] bg-white absolute top-[-250px] left-[-420px] p-5 rounded-3xl flex flex-col justify-between align-center">
       <h1>Talk to Gemini Ai about this document</h1>
       <hr />
-      <div className="border h-64 w-[100%]">
+      <div className="border h-[76%] w-[100%]">
         <ul>{chatComponent}</ul>
       </div>
       <form className="flex">

@@ -1,3 +1,6 @@
+import { useMyContext } from "@/store";
+
 export const useHome = () => {
-  return {};
+  const { data } = useMyContext();
+  return { data };
 };

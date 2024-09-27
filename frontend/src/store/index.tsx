@@ -68,7 +68,7 @@ const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
       else setData([]);
       const response: AlertMessageInterface = {
         title: "Success",
-        message: "Products were fetched successfully",
+        message: "Documents were fetched successfully",
       };
       setResponse(response);
       setTimeout(() => {
