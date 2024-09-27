@@ -11,8 +11,28 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { ChangeEvent, useState } from "react";
+import { useMyContext } from "@/store";
 
 const CreateDocument = () => {
+  const { createDocument } = useMyContext();
+  const [document, setDocument] = useState<File | null>(null);
+  const handleDocumentFormChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setDocument(event.target.files[0]);
+      console.log(event.target.files[0]);
+    }
+  };
+  const submitDocument = async (event: any) => {
+    event.preventDefault();
+    if (!document) {
+      alert("Please select a file first!");
+      return;
+    }
+    await createDocument(document);
+    setDocument(null);
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -23,7 +43,7 @@ const CreateDocument = () => {
           New Document
         </Button>
       </DialogTrigger>
-      <form>
+      <form onSubmit={submitDocument}>
         <DialogContent className="bg-white">
           <DialogHeader>
             <DialogTitle className="text-zinc-800">Upload Document</DialogTitle>
@@ -45,7 +65,8 @@ const CreateDocument = () => {
               className="text-zinc-800"
               type="file"
               id="document"
-              name="document"
+              accept="application/pdf"
+              onChange={handleDocumentFormChange}
             />
           </div>
           <hr />
@@ -54,6 +75,8 @@ const CreateDocument = () => {
               type="submit"
               variant={"outline"}
               className="w-[60%] m-auto"
+              disabled={!document}
+              onClick={submitDocument}
             >
               Submit Document
             </Button>

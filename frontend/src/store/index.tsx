@@ -14,13 +14,22 @@ import {
   createContext,
 } from "react";
 
-const DataContext = createContext<any>(null);
+type requestTypes = Promise<200 | 201 | 500>;
+interface ContextInterface {
+  data: DocumentInterface[];
+  response: Response;
+  loading: boolean;
+  error: string | null;
+  fetchDocuments: () => requestTypes;
+  createDocument: (document: File) => requestTypes;
+  deleteDocument: (_id: DocumentInterface["_id"]) => requestTypes;
+}
 
-export const useData = () => useContext(DataContext);
+const MyContext = createContext<ContextInterface>({} as ContextInterface);
 
-const DataProvider: FC<{ children: ReactNode }> = ({ children }) => {
+const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [data, setData] = useState<DocumentInterface[]>([]);
-  const [response, setResponse] = useState<Response>({ message: "" });
+  const [response, setResponse] = useState<Response>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,26 +37,30 @@ const DataProvider: FC<{ children: ReactNode }> = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
-      const data = await fetchDocumentsApiCall();
-      setData(data.data);
-      setResponse(data);
+      const getDocumentsResponse = await fetchDocumentsApiCall();
+      setData(getDocumentsResponse);
+      setResponse("products fetched");
     } catch (err) {
       setError("Failed to fetch documents");
+      return 500;
     } finally {
       setLoading(false);
+      return 200;
     }
   };
 
-  const createDocument = async (document: DocumentInterface) => {
+  const createDocument = async (document: File) => {
     setLoading(true);
     setError(null);
     try {
-      const data = await createDocumentApiCall(document);
-      setResponse(data);
+      await createDocumentApiCall(document);
     } catch (err) {
       setError("Failed to save document");
+      return 500;
     } finally {
+      setResponse("Successfully created document");
       setLoading(false);
+      return 201;
     }
   };
 
@@ -59,8 +72,10 @@ const DataProvider: FC<{ children: ReactNode }> = ({ children }) => {
       setResponse(data);
     } catch (err) {
       setError("Failed to delete document");
+      return 500;
     } finally {
       setLoading(false);
+      return 200;
     }
   };
 
@@ -68,7 +83,7 @@ const DataProvider: FC<{ children: ReactNode }> = ({ children }) => {
     fetchDocuments();
   }, []);
   return (
-    <DataContext.Provider
+    <MyContext.Provider
       value={{
         data,
         response,
@@ -80,8 +95,16 @@ const DataProvider: FC<{ children: ReactNode }> = ({ children }) => {
       }}
     >
       {children}
-    </DataContext.Provider>
+    </MyContext.Provider>
   );
 };
 
-export default DataProvider;
+const useMyContext = () => {
+  const context = useContext(MyContext);
+  if (!context) {
+    throw new Error("useMyContext must be used within a MyProvider");
+  }
+  return context;
+};
+
+export { useMyContext, MyProvider };

@@ -1,64 +1,64 @@
 export interface DocumentInterface {
   _id: string;
-  contracting_company: Enterprise;
-  contracted_company: Enterprise;
+  empresa_contratante: Empresa;
+  empresa_contratada: Empresa;
   objeto_do_contrato: ObjetoDoContrato;
-  obligations: string;
-  financial_details: FinancialDetails;
-  complementary_information: string;
-  payment_details: PaymentDetails;
+  obrigacoes_da_empresa_contratada: string;
+  detalhes_financeiros: DetalhesFinanceiros;
+  informacoes_complementares: string;
+  detalhes_e_condicoes_de_pagamento: DetalhesDePagamento;
   disposicoes_finais: string;
-  document_date: string;
+  data_do_documento: string;
 }
 
-interface Enterprise {
-  corporate_name: string;
+interface Empresa {
+  razao_social: string;
   cnpj: string;
-  address: string;
+  endereco: string;
 }
 
 interface ObjetoDoContrato {
-  init_date: string;
-  end_date: string;
-  obligations: string;
-  complete_description: string;
+  data_inicial: string;
+  data_final: string;
+  obrigacoes: string;
+  descricao_completa: string;
 }
 
-interface MonetaryInformation {
-  value: number;
-  description: string;
+interface InformacoesFinanceiras {
+  valor: number;
+  descricao: string;
 }
 
-interface OperatingRevenue extends MonetaryInformation {}
-interface FixedExpenses extends MonetaryInformation {}
-interface VariableExpenses extends MonetaryInformation {}
-interface InvestmentExpenses extends MonetaryInformation {}
+interface ReceitaOperacionalBruta extends InformacoesFinanceiras {}
+interface GastoFixo extends InformacoesFinanceiras {}
+interface GastoVariavel extends InformacoesFinanceiras {}
+interface GastoManutencaoInvestimento extends InformacoesFinanceiras {}
 
-interface OperatingExpense {
-  fixed_expenses: FixedExpenses;
-  variable_expenses: VariableExpenses;
-  investment_expenses: InvestmentExpenses;
+interface DespesaOperacional {
+  gasto_fixo: GastoFixo;
+  gasto_variavel: GastoVariavel;
+  gasto_manutencao_investimento: GastoManutencaoInvestimento;
 }
 
-interface OperatingProfit extends MonetaryInformation {
-  relative_percentage: number;
+interface LucroOperacional extends InformacoesFinanceiras {
+  porcentagem_relativa: number;
 }
 
-interface NetIncome extends MonetaryInformation {}
+interface ResultadoLiquido extends InformacoesFinanceiras {}
 
-interface FinancialDetails {
-  operating_revenue: OperatingRevenue;
-  operating_costs: OperatingExpense;
-  operating_profit: OperatingProfit;
-  net_income: NetIncome;
-  financial_projections: string;
+interface DetalhesFinanceiros {
+  receita_operacional_bruta: ReceitaOperacionalBruta;
+  despesa_operacional: DespesaOperacional;
+  lucro_operacional: LucroOperacional;
+  resultado_liquido: ResultadoLiquido;
+  projecao_financeira: string;
 }
 
-interface PaymentDetails {
-  total_value: number;
-  parcela_value: number;
+interface DetalhesDePagamento {
+  valor_total: number;
+  valor_por_parcela: number;
   parcelas: number;
-  end_date: string;
+  data_final: string;
   multa_inicial: number;
   multa_cumulativa: number;
 }

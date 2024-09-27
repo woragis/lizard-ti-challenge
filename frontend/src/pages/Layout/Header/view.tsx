@@ -4,13 +4,13 @@ import { Link, useLocation } from "react-router-dom";
 import useHeader from "./useHeader";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { useData } from "@/store";
+import { useMyContext } from "@/store";
 
 const HeaderView = () => {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
-  const { error } = useData();
-  console.log(error);
+  const { error } = useMyContext();
+  console.log("Error:", error);
 
   useEffect(() => {
     setIsLoading(true);
