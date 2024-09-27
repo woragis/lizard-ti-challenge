@@ -16,11 +16,16 @@ import {
 } from "react";
 
 type requestTypes = Promise<200 | 201 | 500>;
+interface AlertMessageInterface {
+  title: string;
+  message: string;
+}
+
 interface ContextInterface {
   data: DocumentInterface[];
-  response: Response;
+  response: AlertMessageInterface | null;
   loading: boolean;
-  error: string | null;
+  error: AlertMessageInterface | null;
   talkToGemini: (_id: string, prompt: string) => {};
   fetchDocuments: () => requestTypes;
   createDocument: (document: File) => requestTypes;
@@ -33,11 +38,12 @@ const MyContext = createContext<ContextInterface>({} as ContextInterface);
 
 const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [data, setData] = useState<DocumentInterface[]>([]);
-  const [response, setResponse] = useState<Response>("");
+  const [response, setResponse] = useState<AlertMessageInterface | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [chatLoading, setChatLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<AlertMessageInterface | null>(null);
   const [chat, setChat] = useState<any>(null);
+  const alertTime = 5000;
 
   const talkToGemini = async (_id: string, prompt: string) => {
     setChatLoading(true);
@@ -46,7 +52,8 @@ const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
       const geminiResponse = await talkToGeminiApiCall(_id, prompt);
       setChat(geminiResponse);
     } catch (err) {
-      setError("Error receiving gemini response");
+      let error: AlertMessageInterface = { title: "", message: "" };
+      setError(error);
     } finally {
       setChatLoading(false);
     }
@@ -56,11 +63,27 @@ const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
-      const getDocumentsResponse = await fetchDocumentsApiCall();
-      setData(getDocumentsResponse);
-      setResponse("products fetched");
+      const documents = await fetchDocumentsApiCall();
+      if (documents) setData(documents);
+      else setData([]);
+      const response: AlertMessageInterface = {
+        title: "Success",
+        message: "Products were fetched successfully",
+      };
+      setResponse(response);
+      setTimeout(() => {
+        setResponse(null);
+      }, alertTime);
     } catch (err) {
-      setError("Failed to fetch documents");
+      const error: AlertMessageInterface = {
+        title: "Error fetching Products",
+        message:
+          "We encountered a error while fetching products in the backend",
+      };
+      setError(error);
+      setTimeout(() => {
+        setError(null);
+      }, alertTime);
       return 500;
     } finally {
       setLoading(false);
@@ -73,11 +96,26 @@ const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
     setError(null);
     try {
       await createDocumentApiCall(document);
+      const responseMessage: AlertMessageInterface = {
+        title: "Success",
+        message: "Your document was successfully created",
+      };
+      setResponse(responseMessage);
+      setTimeout(() => {
+        setResponse(null);
+      }, alertTime);
     } catch (err) {
-      setError("Failed to save document");
+      const errorMessage: AlertMessageInterface = {
+        title: "Error Uploading Document",
+        message:
+          "We encountered a error while uploading your document to the backend",
+      };
+      setError(errorMessage);
+      setTimeout(() => {
+        setError(null);
+      }, alertTime);
       return 500;
     } finally {
-      setResponse("Successfully created document");
       setLoading(false);
       return 201;
     }
@@ -87,10 +125,24 @@ const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
-      const data = await deleteDocumentApiCall(document_id);
-      setResponse(data);
+      await deleteDocumentApiCall(document_id);
+      const responseMessage: AlertMessageInterface = {
+        title: "Success",
+        message: "Your document was successfully deleted",
+      };
+      setResponse(responseMessage);
+      setTimeout(() => {
+        setResponse(null);
+      }, alertTime);
     } catch (err) {
-      setError("Failed to delete document");
+      const errorMessage: AlertMessageInterface = {
+        title: "Error Deleting Document",
+        message: "We encountered a error while deleting the chosen document",
+      };
+      setError(errorMessage);
+      setTimeout(() => {
+        setError(null);
+      }, alertTime);
       return 500;
     } finally {
       setLoading(false);
