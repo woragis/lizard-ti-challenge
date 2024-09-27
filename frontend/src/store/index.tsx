@@ -2,6 +2,7 @@ import {
   createDocumentApiCall,
   deleteDocumentApiCall,
   fetchDocumentsApiCall,
+  talkToGeminiApiCall,
 } from "@/api";
 import { Response } from "@/types/api";
 import { DocumentInterface } from "@/types/document";
@@ -20,9 +21,12 @@ interface ContextInterface {
   response: Response;
   loading: boolean;
   error: string | null;
+  talkToGemini: (_id: string, prompt: string) => {};
   fetchDocuments: () => requestTypes;
   createDocument: (document: File) => requestTypes;
   deleteDocument: (_id: DocumentInterface["_id"]) => requestTypes;
+  chat: string[];
+  chatLoading: boolean;
 }
 
 const MyContext = createContext<ContextInterface>({} as ContextInterface);
@@ -31,7 +35,22 @@ const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [data, setData] = useState<DocumentInterface[]>([]);
   const [response, setResponse] = useState<Response>("");
   const [loading, setLoading] = useState<boolean>(true);
+  const [chatLoading, setChatLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [chat, setChat] = useState<any>(null);
+
+  const talkToGemini = async (_id: string, prompt: string) => {
+    setChatLoading(true);
+    setError(null);
+    try {
+      const geminiResponse = await talkToGeminiApiCall(_id, prompt);
+      setChat(geminiResponse);
+    } catch (err) {
+      setError("Error receiving gemini response");
+    } finally {
+      setChatLoading(false);
+    }
+  };
 
   const fetchDocuments = async () => {
     setLoading(true);
@@ -89,9 +108,12 @@ const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
         response,
         error,
         loading,
+        talkToGemini,
         fetchDocuments,
         createDocument,
         deleteDocument,
+        chat,
+        chatLoading,
       }}
     >
       {children}

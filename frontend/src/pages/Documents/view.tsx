@@ -1,4 +1,4 @@
-import ReadDocument from "@/components/ReadDocument";
+import Document from "@/components/Document";
 import { useDocumentsModel } from "./model";
 import CreateDocument from "@/components/CreateDocument";
 import { Button } from "@/components/ui/button";
@@ -28,7 +28,7 @@ export const DocumentsView = ({
       return (
         <>
           <div key={_id}>
-            <ReadDocument
+            <Document
               key={_id}
               _id={_id}
               empresa_contratante={contracting_company}
