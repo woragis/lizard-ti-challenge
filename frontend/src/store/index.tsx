@@ -4,7 +4,6 @@ import {
   fetchDocumentsApiCall,
   talkToGeminiApiCall,
 } from "@/api";
-import { Response } from "@/types/api";
 import { DocumentInterface } from "@/types/document";
 import {
   FC,
