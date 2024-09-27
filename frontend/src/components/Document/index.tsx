@@ -28,7 +28,7 @@ const ReadDocument = ({
   disposicoes_finais,
   data_do_documento: document_date,
 }: DocumentInterface) => {
-  const { deleteDocument } = useMyContext();
+  const { deleteDocument, talkToGemini } = useMyContext();
   let operating_costs = financial_details?.despesa_operacional;
   const [inputText, setInputText] = useState<string>("");
   const [chatData, setChatData] = useState<any>([]);
@@ -39,14 +39,10 @@ const ReadDocument = ({
     console.log(event.target.value);
     setInputText(event.target.value);
   };
-  const talkToGemini = async (event: any) => {
+  const submitGeminiPrompt = async (event: any) => {
     event.preventDefault();
-    alert("Clicked and sent to backend");
-    const backendUri = "http://localhost:8000/chat";
-    const formData = { _id: _id, prompt: inputText };
-    const response = await axios.post(backendUri, JSON.stringify(formData), {});
-    const data = response.data;
-    setChatData((prevState: any) => prevState.push(data));
+    talkToGemini(_id, inputText);
+    setInputText("");
   };
   return (
     <Dialog>
@@ -76,9 +72,14 @@ const ReadDocument = ({
             <Input
               placeholder="talk to Gemini about this document"
               className="rounded-3xl"
+              value={inputText}
               onChange={handleInputChange}
             />
-            <Button size={"icon"} variant={"secondary"} onClick={talkToGemini}>
+            <Button
+              size={"icon"}
+              variant={"secondary"}
+              onClick={submitGeminiPrompt}
+            >
               <Send />
             </Button>
           </form>
