@@ -7,6 +7,7 @@ from controllers.ai_controller import send_genai_file, get_genai_json, get_monet
 from controllers.files_controller import write_tmp_file, delete_tmp_file
 from controllers.time_controller import get_current_time
 from controllers.data_controller import join_dicts
+from controllers.database_controller import save_document_data_on_database
 
 router = APIRouter()
 
@@ -18,34 +19,39 @@ async def root():
 async def read_documents():
   return list_serial(document_collection.find())
 
-def save_document_data_on_database(data: dict):
-  document_collection.insert_one(data)
-
 @router.post('/documents')
 async def upload_pdf(file: UploadFile = File(...)):
+  # Test if application is pdf
   if file.content_type != 'application/pdf':
     raise HTTPException(status_code=400, detail="Invalid file type. Only PDF files are allowed.")
 
-  time_now = get_current_time() # Get Current time to use it in filename
-  local_file_name = f"{file.filename}_{time_now}.pdf" # Concat current_time to file_name to prevent errors
-  local_file_path = f"tmp/{local_file_name}" # Concat file_name to path directory
-  await write_tmp_file(file_path=local_file_path, file=file) # Save received file to tmp directory
-  
-  genai_file = send_genai_file(local_file_path, local_file_name) # Send saved file to genai
+  # Initiate local file name and path
+  time_now = get_current_time()
+  local_file_name = f"{file.filename}_{time_now}.pdf"
+  local_file_path = f"tmp/{local_file_name}"
+
+  # Write local file
+  await write_tmp_file(file_path=local_file_path, file=file)
+
+  # Send file to genai
+  genai_file = send_genai_file(local_file_path, local_file_name)
+
+  # Create Dict from genai document interpretation
   file_json = get_genai_json(genai_file)
   monetary_json = get_monetary_information(genai_file)
+
+  # Join the two Dict parts
   full_document_dict = join_dicts(file_json, monetary_json)
+
+  # Save Dict to MongoDB Database
   save_document_data_on_database(full_document_dict)
-  
-  # TODO -- USE MONGODB TO SAVE JSON RESPONSE FROM GENAI
+
+  # Delete local file
   delete_tmp_file(local_file_path)
 
   return JSONResponse(status_code=201, content={"message": "file was uploaded successfully" })
 
-
-
-# Delete Document
-@router.delete('/documents')
+@router.delete('/documents/{_id}')
 async def delete_document(_id: str):
   document_collection.find_one_and_delete({"_id": ObjectId(_id)})
   return {"message": "deleted document with id: " + _id}
