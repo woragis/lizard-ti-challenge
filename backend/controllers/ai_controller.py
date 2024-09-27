@@ -6,20 +6,20 @@ from fastapi import File
 genai.configure(api_key="AIzaSyD0ojIsHcVtk20_ukgOgUr54xMUX9l13Tk")
 model_name = 'gemini-1.5-flash'
 safety_settings={
-    HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-    HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+  HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+  HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
 }
 generation_config = {
-    "temperature": 0.6,
-    "top_k": 0,
-    "top_p": 0.95,
-    "max_output_tokens": 1000
+  "temperature": 0.6,
+  "top_k": 0,
+  "top_p": 0.95,
+  "max_output_tokens": 1000
 }
 
 model = genai.GenerativeModel(
-   model_name,
-   safety_settings,
-   generation_config
+  model_name,
+  safety_settings,
+  generation_config
 )
 
 
@@ -31,7 +31,7 @@ def get_genai_json(file: File) -> dict:
     Me retorne os dados desse documento
     Use esse JSON schema:
 
-        {
+    {
       "empresa_contratante": {
         "razao_social": "Empresa Contratante LTDA",
         "cnpj": "12.345.678/0001-90",
@@ -71,38 +71,40 @@ def get_monetary_information(file: File):
     Me retorne os dados monetarios presentes nesse documento
     Usand esse JSON schema:
 
-        "obrigacoes_da_empresa_contratada": "A empresa contratada deve fornecer relatórios mensais.",
-        "detalhes_financeiros": {
-          "receita_operacional_bruta": {
-            "valor": 1000000.00,
-            "descricao": "Receita total prevista para o ano."
-          },
-          "despesa_operacional": {
-            "gasto_fixo": {
-              "valor": 200000.00,
-              "descricao": "Despesas fixas mensais."
-            },
-            "gasto_variavel": {
-              "valor": 300000.00,
-              "descricao": "Despesas variáveis relacionadas ao projeto."
-            },
-            "gasto_manutencao_investimento": {
-              "valor": 50000.00,
-              "descricao": "Despesas com manutenção e investimento."
-            }
-          },
-          "lucro_operacional": {
-            "valor": 500000.00,
-            "descricao": "Lucro após deduzir despesas.",
-            "porcentagem_relativa": 50.0
-          },
-          "resultado_liquido": {
-            "valor": 450000.00,
-            "descricao": "Resultado final após deduções."
-          },
-          "projecao_financeira": "Projeção de crescimento anual de 10%."
+    {
+    "obrigacoes_da_empresa_contratada": "A empresa contratada deve fornecer relatórios mensais.",
+    "detalhes_financeiros": {
+      "receita_operacional_bruta": {
+        "valor": 1000000.00,
+        "descricao": "Receita total prevista para o ano."
+      },
+      "despesa_operacional": {
+        "gasto_fixo": {
+          "valor": 200000.00,
+          "descricao": "Despesas fixas mensais."
         },
-      "data_do_documento": "Data escrita ao final do documento",
+        "gasto_variavel": {
+          "valor": 300000.00,
+          "descricao": "Despesas variáveis relacionadas ao projeto."
+        },
+        "gasto_manutencao_investimento": {
+          "valor": 50000.00,
+          "descricao": "Despesas com manutenção e investimento."
+        }
+      },
+      "lucro_operacional": {
+        "valor": 500000.00,
+        "descricao": "Lucro após deduzir despesas.",
+        "porcentagem_relativa": 50.0
+      },
+      "resultado_liquido": {
+        "valor": 450000.00,
+        "descricao": "Resultado final após deduções."
+      },
+      "projecao_financeira": "Projeção de crescimento anual de 10%."
+      },
+    "data_do_documento": "Data escrita ao final do documento",
+    }
   """
 
   response = model.generate_content([file, json_monetary_formatting])
