@@ -5,7 +5,7 @@ import useHeader from "./useHeader";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useMyContext } from "@/store";
-import AlertDialog from "@/components/AlertDialog";
+import CustomAlertDialog from "@/components/CustomAlertDialog";
 
 const HeaderView = () => {
   const location = useLocation();
@@ -37,8 +37,8 @@ const HeaderView = () => {
       <styled.LinksContainer>{navLinks}</styled.LinksContainer>
       {isLoading && <>Loading component</>}
       {error && <>Attention</>}
-      {response && <AlertDialog {...response} variant="default" />}
-      {error && <AlertDialog {...error} variant="destructive" />}
+      {response && <CustomAlertDialog {...response} variant="default" />}
+      {error && <CustomAlertDialog {...error} variant="destructive" />}
     </styled.Nav>
   );
 };

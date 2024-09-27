@@ -1,12 +1,12 @@
 import { RocketIcon } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
-import { useAlertDialogModel } from "./model";
+import { useCustomAlertDialogModel } from "./model";
 
-export const AlertDialogView = ({
+export const CustomAlertDialogView = ({
   title,
   message,
   variant,
-}: ReturnType<typeof useAlertDialogModel>) => {
+}: ReturnType<typeof useCustomAlertDialogModel>) => {
   return (
     <Alert variant={variant} className="w-64 m-10">
       <RocketIcon className="h-6 w-6" />
