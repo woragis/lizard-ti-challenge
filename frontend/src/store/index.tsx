@@ -41,7 +41,7 @@ const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [chatLoading, setChatLoading] = useState<boolean>(true);
   const [error, setError] = useState<AlertMessageInterface | null>(null);
-  const [chat, setChat] = useState<any>(null);
+  const [chat, setChat] = useState<string[]>([""]);
   const alertTime = 5000;
 
   const talkToGemini = async (_id: string, prompt: string) => {
@@ -49,7 +49,8 @@ const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
     setError(null);
     try {
       const geminiResponse = await talkToGeminiApiCall(_id, prompt);
-      setChat(geminiResponse);
+      if (geminiResponse) setChat([...chat, ""]);
+      else setChat([]);
     } catch (err) {
       let error: AlertMessageInterface = { title: "", message: "" };
       setError(error);

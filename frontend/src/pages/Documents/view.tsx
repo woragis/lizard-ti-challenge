@@ -5,11 +5,9 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { DocumentInterface } from "@/types/document";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { Separator } from "@radix-ui/react-separator";
 
 export const DocumentsView = ({
   data,
-  loading,
   fetchDocuments,
 }: ReturnType<typeof useDocumentsModel>) => {
   const documents = data.map(
@@ -26,24 +24,19 @@ export const DocumentsView = ({
       data_do_documento: document_date,
     }: DocumentInterface) => {
       return (
-        <>
-          <div key={_id}>
-            <Document
-              key={_id}
-              _id={_id}
-              empresa_contratante={contracting_company}
-              empresa_contratada={contracted_company}
-              objeto_do_contrato={objeto_do_contrato}
-              obrigacoes_da_empresa_contratada={obligations}
-              detalhes_financeiros={financial_details}
-              informacoes_complementares={complementary_information}
-              detalhes_e_condicoes_de_pagamento={payment_details}
-              disposicoes_finais={disposicoes_finais}
-              data_do_documento={document_date}
-            />
-            <Separator className="mt-4" />
-          </div>
-        </>
+        <Document
+          key={_id}
+          _id={_id}
+          empresa_contratante={contracting_company}
+          empresa_contratada={contracted_company}
+          objeto_do_contrato={objeto_do_contrato}
+          obrigacoes_da_empresa_contratada={obligations}
+          detalhes_financeiros={financial_details}
+          informacoes_complementares={complementary_information}
+          detalhes_e_condicoes_de_pagamento={payment_details}
+          disposicoes_finais={disposicoes_finais}
+          data_do_documento={document_date}
+        />
       );
     }
   );
@@ -65,7 +58,6 @@ export const DocumentsView = ({
           </Button>
         </div>
         <hr className="my-5" />
-        {loading && <>Loading</>}
         {data && documents}
       </ScrollArea>
     </main>

@@ -15,14 +15,14 @@ const HeaderView = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    const timer = setTimeout(() => setIsLoading(false), 1000); // Simulate loading delay
-    return () => clearTimeout(timer); // Cleanup on route change
+    const timer = setTimeout(() => setIsLoading(false), 1000);
+    return () => clearTimeout(timer);
   }, [location]);
 
   const { navLinksData } = useHeader();
   const navLinks = navLinksData.map(({ name, path }: PagesInterface) => {
     return (
-      <styled.LinkContainer>
+      <styled.LinkContainer key={name}>
         <Link to={path}>
           <Button className="shadow-md w-32 font-bold text-zinc-600">
             {name.toLocaleUpperCase()}

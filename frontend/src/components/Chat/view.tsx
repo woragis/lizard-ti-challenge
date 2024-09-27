@@ -9,8 +9,12 @@ export const ChatView = ({
   handleInputChange,
   submitGeminiPrompt,
 }: ReturnType<typeof useChatModel>) => {
-  const chatComponent = chat.map((text: any) => {
-    return <p className="">{text}</p>;
+  const chatComponent = chat.map((text: string, index: number) => {
+    return (
+      <p key={"chat_message_" + index} className="">
+        {text}
+      </p>
+    );
   });
   return (
     <div className="w-[500px] h-96 bg-red-500 absolute top-0 left-[-600px] p-5 rounded-3xl flex flex-col justify-between align-center">

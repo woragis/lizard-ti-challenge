@@ -17,7 +17,7 @@ export const DocumentView = ({
 }: ReturnType<typeof useDocumentModel>) => {
   return (
     <Dialog>
-      <DialogTrigger asChild>
+      <DialogTrigger asChild className="mt-4">
         <Card className="hover:cursor-pointer">
           <CardHeader>
             <CardTitle className="font-normal">
@@ -36,7 +36,7 @@ export const DocumentView = ({
         </Card>
       </DialogTrigger>
       <DialogContent className="bg-white ml-96">
-        <Chat _id={documentProps._id} />
+        <Chat key={`chat-${documentProps._id}`} _id={documentProps._id} />
         <DialogHeader>
           <DialogTitle className="text-zinc-800">
             Document {documentProps._id}
