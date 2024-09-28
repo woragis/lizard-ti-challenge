@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export const useDocumentModel = (documentProps: DocumentInterface) => {
   const [open, setOpen] = useState<boolean>(true);
-  const { deleteDocument } = useMyContext();
+  const { deleteDocument, fetchDocuments } = useMyContext();
   const openDialog = () => {
     setOpen(false);
   };
@@ -14,6 +14,7 @@ export const useDocumentModel = (documentProps: DocumentInterface) => {
   return {
     documentProps,
     deleteDocument,
+    fetchDocuments,
     open,
     openDialog,
     closeDialog,

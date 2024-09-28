@@ -5,6 +5,7 @@ import {
   talkToGeminiApiCall,
 } from "@/api";
 import { DocumentInterface } from "@/types/document";
+import { ChatInterface } from "@/types/gemini";
 import {
   FC,
   ReactNode,
@@ -12,6 +13,8 @@ import {
   useState,
   useContext,
   createContext,
+  Dispatch,
+  SetStateAction,
 } from "react";
 
 type requestTypes = Promise<200 | 201 | 500>;
@@ -29,7 +32,8 @@ interface ContextInterface {
   fetchDocuments: () => requestTypes;
   createDocument: (document: File) => requestTypes;
   deleteDocument: (_id: DocumentInterface["_id"]) => requestTypes;
-  chat: string[];
+  chat: ChatInterface[];
+  setChat: Dispatch<SetStateAction<ChatInterface[]>>;
   chatLoading: boolean;
 }
 
@@ -41,16 +45,38 @@ const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [chatLoading, setChatLoading] = useState<boolean>(true);
   const [error, setError] = useState<AlertMessageInterface | null>(null);
-  const [chat, setChat] = useState<string[]>([""]);
+  const [chat, setChat] = useState<ChatInterface[]>([]);
   const alertTime = 5000;
 
   const talkToGemini = async (_id: string, prompt: string) => {
     setChatLoading(true);
     setError(null);
+    if (chat.length === 0) {
+      const firstPrompt = "\n\nDito isso me fale sobre esse arquivo";
+      setChat((prevState) => [
+        ...prevState,
+        { author: "user", message: prompt + firstPrompt },
+      ]);
+    } else {
+      setChat((prevState) => [
+        ...prevState,
+        { author: "user", message: prompt },
+      ]);
+    }
+    const errorGeminiAiMessage =
+      "Oops, we have a problem generating your response";
     try {
       const geminiResponse = await talkToGeminiApiCall(_id, prompt);
-      if (geminiResponse) setChat([...chat, ""]);
-      else setChat([]);
+      if (geminiResponse) {
+        setChat((prevState) => [
+          ...prevState,
+          { author: "gemini", message: geminiResponse },
+        ]);
+      } else
+        setChat((prevState) => [
+          ...prevState,
+          { author: "gemini", message: errorGeminiAiMessage },
+        ]);
     } catch (err) {
       let error: AlertMessageInterface = { title: "", message: "" };
       setError(error);
@@ -157,6 +183,7 @@ const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
     <MyContext.Provider
       value={{
         data,
+        setChat,
         response,
         error,
         loading,

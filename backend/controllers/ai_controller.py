@@ -22,6 +22,11 @@ model = genai.GenerativeModel(
   generation_config
 )
 
+def talk_to_genai_about_file(file, prompt):
+  response = model.generate_content(f'{prompt}\nEu estou falando sobre esse arquivo: {file}')
+  print("Gemini Ai Response:")
+  print(response.text)
+  return response.text
 
 def send_genai_file(file_path: str, file_name: str):
   return genai.upload_file(path=file_path, display_name=file_name)

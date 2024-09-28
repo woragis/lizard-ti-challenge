@@ -1,12 +1,17 @@
+import { Button } from "@/components/ui/button";
 import { useHome } from "./model";
 import { Container, Title } from "./styles";
 
-export const HomeView = ({ data }: ReturnType<typeof useHome>) => {
+export const HomeView = ({
+  navigateToDocuments,
+}: ReturnType<typeof useHome>) => {
   return (
     <Container>
-      <Title>
-        Esse Site foi criado com o intuito de te ajudar a entender documents com
-        o Gemini AI
+      <Title className="text-center text-[50px] mt-[-50px] mb-[30px]">
+        Esse Site foi criado <hr />
+        para te ajudar a entender documentos
+        <hr />
+        com o <span className="font-bold text-3xl">Gemini AI</span>
       </Title>
       <ul>
         <li>Voce envia seu documento</li>
@@ -15,7 +20,14 @@ export const HomeView = ({ data }: ReturnType<typeof useHome>) => {
           AI
         </li>
       </ul>
-      {data && <>Hi</>}
+      <div className="flex justify-center my-5">
+        <Button
+          onClick={navigateToDocuments}
+          className="bg-zinc-800 font-bold text-white h-24 hover:bg-zinc-950"
+        >
+          Conversar com o Gemini AI sobre meus documentos
+        </Button>
+      </div>
     </Container>
   );
 };

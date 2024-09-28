@@ -15,6 +15,7 @@ export const DocumentView = ({
   documentProps,
   open,
   closeDialog,
+  fetchDocuments,
   deleteDocument,
 }: ReturnType<typeof useDocumentModel>) => {
   const CardTriggerElement = () => {
@@ -41,7 +42,7 @@ export const DocumentView = ({
     return (
       <div className="w-52">
         <Chat key={`chat-${documentProps._id}`} _id={documentProps._id} />
-        <Card className="absolute right-[-420px] h-[500px] top-[-250px] w-[500px] bg-white">
+        <Card className="absolute right-[-550px] h-[500px] top-[-250px] w-[430px] bg-white">
           <CardHeader>
             <CardTitle>Document {documentProps._id}</CardTitle>
             <CardDescription>
@@ -216,6 +217,9 @@ export const DocumentView = ({
               onClick={() => {
                 deleteDocument(documentProps._id);
                 closeDialog();
+                setTimeout(() => {
+                  fetchDocuments();
+                }, 500);
               }}
             >
               Delete Document

@@ -3,17 +3,22 @@ from fastapi.responses import JSONResponse
 from config.database import document_collection
 from schema.document_schemas import list_serial
 from bson import ObjectId
-from controllers.ai_controller import send_genai_file, get_genai_json, get_monetary_information
+from controllers.ai_controller import talk_to_genai_about_file, send_genai_file, get_genai_json, get_monetary_information
 from controllers.files_controller import write_tmp_file, delete_tmp_file
 from controllers.time_controller import get_current_time
 from controllers.data_controller import join_dicts
 from controllers.database_controller import save_document_data_on_database
-
+from models.chat_models import DocumentChatRequest
 router = APIRouter()
 
 @router.get('/')
 async def root():
   return {"message": "Hello World"}
+
+@router.post('/chat/{_id}')
+async def talk_to_gemini(_id, request: DocumentChatRequest):
+  file = document_collection.find_one({'_id': ObjectId(_id)})
+  return talk_to_genai_about_file(file, request.prompt)
 
 @router.get('/documents')
 async def read_documents():
