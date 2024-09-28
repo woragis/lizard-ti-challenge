@@ -23,14 +23,17 @@ export const DocumentView = ({
       <Card className="hover:cursor-pointer mt-4">
         <CardHeader>
           <CardTitle className="font-normal">
-            Documento da Empresa:{" "}
-            <strong>{documentProps.empresa_contratante.razao_social}</strong>{" "}
+            Documento da Empresa:
+            <strong>
+              {" "}
+              {documentProps.empresa_contratante.razao_social}
+            </strong>{" "}
             com{" "}
             <strong>{documentProps.empresa_contratante.razao_social}</strong>
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="flex justify-between">
             {documentProps.data_do_documento}
-            <small className="text-zinc-300">
+            <small className="text-zinc-500 italic">
               document id {documentProps._id}
             </small>
           </CardDescription>
@@ -44,27 +47,44 @@ export const DocumentView = ({
         <Chat key={`chat-${documentProps._id}`} _id={documentProps._id} />
         <Card className="absolute right-[-550px] h-[500px] top-[-250px] w-[430px] bg-white">
           <CardHeader>
-            <CardTitle>Document {documentProps._id}</CardTitle>
-            <CardDescription>
+            <CardTitle>
+              Documento
+              <span className="text-sm text-zinc-400 italic">
+                {" "}
+                {documentProps._id}
+              </span>
+            </CardTitle>
+            <CardDescription className="text-zinc-800">
               Informações acerca do contrato entre a empresa{" "}
-              {documentProps.empresa_contratante.razao_social} e{" "}
-              {documentProps.empresa_contratante.razao_social}
+              <strong>{documentProps.empresa_contratante.razao_social}</strong>{" "}
+              e{" "}
+              <strong>{documentProps.empresa_contratante.razao_social}</strong>
               <br />
-              Contrato que vai de{" "}
-              {documentProps.objeto_do_contrato.data_inicial}
-              ate {documentProps.objeto_do_contrato.data_final}
+              <div className="text-[12px] mt-2">
+                Esse contrato que vai de{" "}
+                {documentProps.objeto_do_contrato.data_inicial} ate{" "}
+                {documentProps.objeto_do_contrato.data_final}
+              </div>
             </CardDescription>
           </CardHeader>
           <hr />
           <CardContent className="h-64 text-sm overflow-y-scroll">
-            <h3>Obrigações do Contrato:</h3>
+            <h3 className="text-[16px] font-bold mt-4">
+              Obrigações do Contrato:
+            </h3>
             {documentProps.obrigacoes_da_empresa_contratada}
             <br />
-            <article className="mb-5">
-              <h3>Detalhes Financeiros:</h3>
-              <div className="flex gap-7">
-                <h4>Receita Operacional Bruta:</h4>
+            <article className="mb-5 pt-4">
+              <hr />
+              <h3 className="text-[16px] font-bold mb-4 pt-2">
+                Detalhes Financeiros:
+              </h3>
+              <div className="flex justify-between">
+                <h4 className="text-[15px] font-bold">
+                  Receita Operacional Bruta:
+                </h4>
                 <em>
+                  R${" "}
                   {
                     documentProps.detalhes_financeiros.receita_operacional_bruta
                       .valor
@@ -79,17 +99,22 @@ export const DocumentView = ({
                 }
               </p>
             </article>
-            <article className="mb-5">
-              <h4>Despesas Operacionais</h4>
+            <article className="mb-8">
+              <h3 className="text-[16px] font-bold mb-4">
+                Despesas Operacionais
+              </h3>
               <ul>
                 <li>
-                  <h5>Despesas Fixas</h5>
-                  <em>
-                    {
-                      documentProps.detalhes_financeiros.despesa_operacional
-                        .gasto_fixo.valor
-                    }
-                  </em>
+                  <div className="flex justify-between">
+                    <h5 className="text-[14px] font-bold">Despesas Fixas</h5>
+                    <em>
+                      R${" "}
+                      {
+                        documentProps.detalhes_financeiros.despesa_operacional
+                          .gasto_fixo.valor
+                      }
+                    </em>
+                  </div>
                   <p>
                     {
                       documentProps.detalhes_financeiros.despesa_operacional
@@ -98,13 +123,18 @@ export const DocumentView = ({
                   </p>
                 </li>
                 <li>
-                  <h5>Despesas Variaveis</h5>
-                  <em>
-                    {
-                      documentProps.detalhes_financeiros.despesa_operacional
-                        .gasto_variavel.valor
-                    }
-                  </em>
+                  <div className="flex justify-between">
+                    <h5 className="text-[14px] font-bold mt-2">
+                      Despesas Variaveis
+                    </h5>
+                    <em>
+                      R${" "}
+                      {
+                        documentProps.detalhes_financeiros.despesa_operacional
+                          .gasto_variavel.valor
+                      }
+                    </em>
+                  </div>
                   <p>
                     {
                       documentProps.detalhes_financeiros.despesa_operacional
@@ -113,13 +143,18 @@ export const DocumentView = ({
                   </p>
                 </li>
                 <li>
-                  <h5>Manutencao e Investimentos</h5>
-                  <em>
-                    {
-                      documentProps.detalhes_financeiros.despesa_operacional
-                        .gasto_manutencao_investimento.valor
-                    }
-                  </em>
+                  <div className="flex justify-between">
+                    <h5 className="text-[14px] font-bold">
+                      Manutencao e Investimentos
+                    </h5>
+                    <em>
+                      R${" "}
+                      {
+                        documentProps.detalhes_financeiros.despesa_operacional
+                          .gasto_manutencao_investimento.valor
+                      }
+                    </em>
+                  </div>
                   <p>
                     {
                       documentProps.detalhes_financeiros.despesa_operacional
@@ -128,16 +163,11 @@ export const DocumentView = ({
                   </p>
                 </li>
               </ul>
-            </article>
-            <article className="mb-5">
-              <div className="flex gap-5">
-                <h3>Lucro Operacional </h3>
+              <div className="flex justify-between">
+                <h5 className="text-[14px] font-bold">Lucro Operacional</h5>
                 <em>
-                  {documentProps.detalhes_financeiros.lucro_operacional.valor} |{" "}
-                  {
-                    documentProps.detalhes_financeiros.lucro_operacional
-                      .porcentagem_relativa
-                  }
+                  R${" "}
+                  {documentProps.detalhes_financeiros.lucro_operacional.valor}{" "}
                 </em>
               </div>
               <p>
@@ -145,9 +175,11 @@ export const DocumentView = ({
               </p>
             </article>
             <article className="mb-5">
-              <div className="flex gap-5">
-                <h3>Resultado Liquido</h3>
+              <hr />
+              <div className="flex justify-between">
+                <h5 className="text-[14px] font-bold">Resultado Liquido</h5>
                 <em>
+                  R${" "}
                   {documentProps.detalhes_financeiros.resultado_liquido.valor}
                 </em>
               </div>
@@ -155,20 +187,28 @@ export const DocumentView = ({
                 {documentProps.detalhes_financeiros.resultado_liquido.descricao}
               </p>
             </article>
-            <article className="mb-5">
-              <h3>Projeção Financeira</h3>
+            <article>
+              <hr />
+              <h3 className="text-[14px] font-bold">Projeção Financeira</h3>
               <p>{documentProps.detalhes_financeiros.projecao_financeira}</p>
             </article>
             <hr />
             <article>
-              <h3>Informacoes Complementares</h3>
+              <hr />
+              <h3 className="text-[16px] font-bold mt-4">
+                Informacoes Complementares
+              </h3>
               <p>{documentProps.informacoes_complementares}</p>
             </article>
             <article>
-              <h3>Remuneração e Condições de Pagamento</h3>
+              <hr />
+              <h3 className="text-[16px] font-bold mt-4">
+                Remuneração e Condições de Pagamento
+              </h3>
               <p>
                 Total a ser pago:{" "}
                 <strong>
+                  R${" "}
                   {documentProps.detalhes_e_condicoes_de_pagamento.valor_total}
                 </strong>
                 <br />
@@ -178,6 +218,7 @@ export const DocumentView = ({
                     documentProps.detalhes_e_condicoes_de_pagamento
                       .multa_inicial
                   }
+                  %
                 </strong>
                 <br />
                 Multa Cumulativa:{" "}
@@ -186,6 +227,7 @@ export const DocumentView = ({
                     documentProps.detalhes_e_condicoes_de_pagamento
                       .multa_cumulativa
                   }
+                  %
                 </strong>
                 <br />
                 Total de Parcelas:{" "}
@@ -195,6 +237,7 @@ export const DocumentView = ({
                 <br />
                 Valor de cada parcela:{" "}
                 <strong>
+                  R${" "}
                   {
                     documentProps.detalhes_e_condicoes_de_pagamento
                       .valor_por_parcela
@@ -203,8 +246,13 @@ export const DocumentView = ({
               </p>
             </article>
             <article>
-              <h3>Disposições Finais</h3>
-              <p>{documentProps.disposicoes_finais}</p>
+              <hr />
+              <h3 className="text-[16px] font-bold text-zinc-700 mt-4">
+                Disposições Finais
+              </h3>
+              <p className="text-zinc-700 italic">
+                {documentProps.disposicoes_finais}
+              </p>
             </article>
             <hr />
           </CardContent>

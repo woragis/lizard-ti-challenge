@@ -5,6 +5,7 @@ import Document from "@/components/Document";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { Button } from "@/components/ui/button";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { DocumentsPageContainer } from "./style";
 
 export const DocumentsView = ({
   data,
@@ -44,7 +45,7 @@ export const DocumentsView = ({
     }
   );
   return (
-    <main className="p-24">
+    <DocumentsPageContainer className="p-24">
       <aside className="absolute right-10 top-20">
         <CreateDocument />
       </aside>
@@ -68,6 +69,6 @@ export const DocumentsView = ({
           </ScrollArea>
         </header>
       </div>
-    </main>
+    </DocumentsPageContainer>
   );
 };

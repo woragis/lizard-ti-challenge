@@ -25,7 +25,7 @@ export const CreateDocumentView = ({
           variant={"secondary"}
           className="bg-green-500 hover:bg-green-600 active:bg-green-800 text-white font-bold rounded-xl p-2 w-[160px] h-12"
         >
-          New Document
+          Novo Documento
         </Button>
       </DialogTrigger>
       <form onSubmit={submitDocument}>

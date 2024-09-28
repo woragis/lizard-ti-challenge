@@ -51,7 +51,7 @@ export const ChatView = ({
   );
   return (
     <div className="w-[900px] h-[600px] bg-white absolute top-[-300px] left-[-550px] p-5 rounded-3xl flex flex-col justify-between align-center">
-      <h1>Talk to Gemini Ai about this document</h1>
+      <h1>Fale com o Gemini AI sobre esse documento</h1>
       <hr />
       <div className="border h-[76%] w-[100%]">
         <ScrollArea className="h-[100%] overflow-scroll">
@@ -61,7 +61,7 @@ export const ChatView = ({
       </div>
       <form className="flex">
         <Input
-          placeholder="talk to Gemini about this document"
+          placeholder="Digite aqui o que quer falar"
           className="rounded-3xl"
           value={inputText}
           onChange={handleInputChange}

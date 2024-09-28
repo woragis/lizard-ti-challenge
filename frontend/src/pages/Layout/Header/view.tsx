@@ -14,8 +14,10 @@ const HeaderView = () => {
     return (
       <styled.LinkContainer key={name}>
         <Link to={path}>
-          <Button className="shadow-md w-32 font-bold text-zinc-600">
-            {name.toLocaleUpperCase()}
+          <Button className="shadow-md w-32 font-bold text-zinc-600 hover:text-zinc-900">
+            {name === "documents"
+              ? "documentos".toLocaleUpperCase()
+              : name.toLocaleUpperCase()}
           </Button>
         </Link>
       </styled.LinkContainer>

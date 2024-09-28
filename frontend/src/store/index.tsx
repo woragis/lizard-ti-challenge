@@ -6,6 +6,7 @@ import {
 } from "@/api";
 import { DocumentInterface } from "@/types/document";
 import { ChatInterface } from "@/types/gemini";
+import { AlertMessageInterface, ContextInterface } from "@/types/store";
 import {
   FC,
   ReactNode,
@@ -13,29 +14,7 @@ import {
   useState,
   useContext,
   createContext,
-  Dispatch,
-  SetStateAction,
 } from "react";
-
-type requestTypes = Promise<200 | 201 | 500>;
-interface AlertMessageInterface {
-  title: string;
-  message: string;
-}
-
-interface ContextInterface {
-  data: DocumentInterface[];
-  response: AlertMessageInterface | null;
-  loading: boolean;
-  error: AlertMessageInterface | null;
-  talkToGemini: (_id: string, prompt: string) => {};
-  fetchDocuments: () => requestTypes;
-  createDocument: (document: File) => requestTypes;
-  deleteDocument: (_id: DocumentInterface["_id"]) => requestTypes;
-  chat: ChatInterface[];
-  setChat: Dispatch<SetStateAction<ChatInterface[]>>;
-  chatLoading: boolean;
-}
 
 const MyContext = createContext<ContextInterface>({} as ContextInterface);
 
@@ -48,9 +27,22 @@ const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [chat, setChat] = useState<ChatInterface[]>([]);
   const alertTime = 5000;
 
+  const receiveResponse = (response: AlertMessageInterface) => {
+    setResponse(null);
+    setResponse(response);
+    setTimeout(() => {
+      setResponse(null);
+    }, alertTime);
+  };
+  const receiveError = (response: AlertMessageInterface) => {
+    setError(null);
+    setError(response);
+    setTimeout(() => {
+      setError(null);
+    }, alertTime);
+  };
   const talkToGemini = async (_id: string, prompt: string) => {
     setChatLoading(true);
-    setError(null);
     if (chat.length === 0) {
       const firstPrompt = "\n\nDito isso me fale sobre esse arquivo";
       setChat((prevState) => [
@@ -64,7 +56,11 @@ const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
       ]);
     }
     const errorGeminiAiMessage =
-      "Oops, we have a problem generating your response";
+      "Oops, estamos com problemas para gerar sua resposta";
+    let errorMessage: AlertMessageInterface = {
+      title: "Erro no Chat do Gemini AI",
+      message: "Encontramos um erro ao tentar se comunicar com o Gemini AI",
+    };
     try {
       const geminiResponse = await talkToGeminiApiCall(_id, prompt);
       if (geminiResponse) {
@@ -77,9 +73,13 @@ const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
           ...prevState,
           { author: "gemini", message: errorGeminiAiMessage },
         ]);
+      receiveError(errorMessage);
     } catch (err) {
-      let error: AlertMessageInterface = { title: "", message: "" };
-      setError(error);
+      setChat((prevState) => [
+        ...prevState,
+        { author: "gemini", message: errorGeminiAiMessage },
+      ]);
+      receiveError(errorMessage);
     } finally {
       setChatLoading(false);
     }
@@ -87,29 +87,26 @@ const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   const fetchDocuments = async () => {
     setLoading(true);
-    setError(null);
+    const responseMessage: AlertMessageInterface = {
+      title: "Sucesso",
+      message: "Documentos foram recebidos com sucesso",
+    };
+    const errorMessage: AlertMessageInterface = {
+      title: "Erro ao receber documentos",
+      message:
+        "Nos encontramos um erro enquanto tentavamos receber os documentos",
+    };
     try {
       const documents = await fetchDocumentsApiCall();
-      if (documents) setData(documents);
-      else setData([]);
-      const response: AlertMessageInterface = {
-        title: "Success",
-        message: "Documents were fetched successfully",
-      };
-      setResponse(response);
-      setTimeout(() => {
-        setResponse(null);
-      }, alertTime);
+      if (documents) {
+        setData(documents);
+        receiveResponse(responseMessage);
+      } else {
+        setData([]);
+        receiveError(errorMessage);
+      }
     } catch (err) {
-      const error: AlertMessageInterface = {
-        title: "Error fetching Products",
-        message:
-          "We encountered a error while fetching products in the backend",
-      };
-      setError(error);
-      setTimeout(() => {
-        setError(null);
-      }, alertTime);
+      receiveError(errorMessage);
       return 500;
     } finally {
       setLoading(false);
@@ -119,27 +116,20 @@ const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   const createDocument = async (document: File) => {
     setLoading(true);
-    setError(null);
+    const responseMessage: AlertMessageInterface = {
+      title: "Sucesso",
+      message: "Seu documento foi criado com sucesso",
+    };
+    const errorMessage: AlertMessageInterface = {
+      title: "Erro ao enviar seu documento",
+      message:
+        "Nos nos deparamos com um erro enquanto tentavamos salvar seu documento",
+    };
     try {
       await createDocumentApiCall(document);
-      const responseMessage: AlertMessageInterface = {
-        title: "Success",
-        message: "Your document was successfully created",
-      };
-      setResponse(responseMessage);
-      setTimeout(() => {
-        setResponse(null);
-      }, alertTime);
+      receiveResponse(responseMessage);
     } catch (err) {
-      const errorMessage: AlertMessageInterface = {
-        title: "Error Uploading Document",
-        message:
-          "We encountered a error while uploading your document to the backend",
-      };
-      setError(errorMessage);
-      setTimeout(() => {
-        setError(null);
-      }, alertTime);
+      receiveError(errorMessage);
       return 500;
     } finally {
       setLoading(false);
@@ -149,26 +139,19 @@ const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   const deleteDocument = async (document_id: DocumentInterface["_id"]) => {
     setLoading(true);
-    setError(null);
+    const responseMessage: AlertMessageInterface = {
+      title: "Sucesso",
+      message: "Seu documento foi deletado com sucesso",
+    };
+    const errorMessage: AlertMessageInterface = {
+      title: "Erro ao deletar seu arquivo",
+      message: "Nós nos deparamos com um erro ao tentar deletar seu documento",
+    };
     try {
       await deleteDocumentApiCall(document_id);
-      const responseMessage: AlertMessageInterface = {
-        title: "Success",
-        message: "Your document was successfully deleted",
-      };
-      setResponse(responseMessage);
-      setTimeout(() => {
-        setResponse(null);
-      }, alertTime);
+      receiveResponse(responseMessage);
     } catch (err) {
-      const errorMessage: AlertMessageInterface = {
-        title: "Error Deleting Document",
-        message: "We encountered a error while deleting the chosen document",
-      };
-      setError(errorMessage);
-      setTimeout(() => {
-        setError(null);
-      }, alertTime);
+      receiveError(errorMessage);
       return 500;
     } finally {
       setLoading(false);
