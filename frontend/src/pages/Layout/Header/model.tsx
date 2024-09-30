@@ -1,9 +1,9 @@
 import pagesData from "../../pagesData";
 
-const useHeader = () => {
+const useHeaderModel = () => {
   const navLinksData = pagesData.slice(0, 2);
 
   return { navLinksData };
 };
 
-export default useHeader;
+export default useHeaderModel;
