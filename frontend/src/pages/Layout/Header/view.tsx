@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useMyContext } from "@/store";
 import CustomAlertDialog from "@/components/CustomAlertDialog";
 
-const HeaderView = ({navLinksData}: ReturnType<typeof useHeaderModel>) => {
+export const HeaderView = ({navLinksData}: ReturnType<typeof useHeaderModel>) => {
   const { error, response } = useMyContext();
 
   const navLinks = navLinksData.map(({ name, path }: PagesInterface) => {
@@ -31,5 +31,3 @@ const HeaderView = ({navLinksData}: ReturnType<typeof useHeaderModel>) => {
     </styled.Nav>
   );
 };
-
-export default HeaderView;
