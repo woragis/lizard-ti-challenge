@@ -3,7 +3,7 @@ from google.generativeai.types import HarmCategory, HarmBlockThreshold
 import json
 from fastapi import File
 
-genai.configure(api_key="AIzaSyD0ojIsHcVtk20_ukgOgUr54xMUX9l13Tk")
+genai.configure(api_key="AIzaSyDsrxsX6CdFc6wqS1c8QHlg5STyKbl5o2g")
 model_name = 'gemini-1.5-flash'
 safety_settings={
   HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,

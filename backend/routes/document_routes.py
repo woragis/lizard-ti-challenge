@@ -22,6 +22,7 @@ async def talk_to_gemini(_id, request: DocumentChatRequest):
 
 @router.get('/documents')
 async def read_documents():
+  print(list_serial(document_collection.find()))
   return list_serial(document_collection.find())
 
 @router.post('/documents')

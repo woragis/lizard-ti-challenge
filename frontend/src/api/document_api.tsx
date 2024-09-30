@@ -4,6 +4,7 @@ import axios from "axios";
 
 export const fetchDocumentsApiCall = async () => {
   const response = await axios.get<DocumentInterface[]>(documentsUri);
+  console.log(response);
   return response.data;
 };
 
