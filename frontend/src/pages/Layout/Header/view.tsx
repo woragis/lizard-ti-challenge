@@ -1,15 +1,14 @@
 import * as styled from "./styles";
 import { PagesInterface } from "../../../types/pages";
 import { Link } from "react-router-dom";
-import useHeader from "./useHeader";
+import { useHeaderModel } from "./model";
 import { Button } from "@/components/ui/button";
 import { useMyContext } from "@/store";
 import CustomAlertDialog from "@/components/CustomAlertDialog";
 
-const HeaderView = () => {
+const HeaderView = ({navLinksData}: ReturnType<typeof useHeaderModel>) => {
   const { error, response } = useMyContext();
 
-  const { navLinksData } = useHeader();
   const navLinks = navLinksData.map(({ name, path }: PagesInterface) => {
     return (
       <styled.LinkContainer key={name}>
