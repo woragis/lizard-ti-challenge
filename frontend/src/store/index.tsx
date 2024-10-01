@@ -57,6 +57,10 @@ const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
     }
     const errorGeminiAiMessage =
       "Oops, estamos com problemas para gerar sua resposta";
+    const responseMessage: AlertMessageInterface = {
+      title: "Sucesso",
+      message: "Documentos foram recebidos com sucesso",
+    };
     let errorMessage: AlertMessageInterface = {
       title: "Erro no Chat do Gemini AI",
       message: "Encontramos um erro ao tentar se comunicar com o Gemini AI",
@@ -73,7 +77,7 @@ const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
           ...prevState,
           { author: "gemini", message: errorGeminiAiMessage },
         ]);
-      receiveError(errorMessage);
+      receiveResponse(responseMessage);
     } catch (err) {
       setChat((prevState) => [
         ...prevState,
