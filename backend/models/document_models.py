@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 
+# Declaração do tipo do documento
+
 class Empresa(BaseModel):
   razao_social: str
   cnpj: str
