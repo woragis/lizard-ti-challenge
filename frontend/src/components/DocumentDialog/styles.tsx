@@ -1,8 +1,6 @@
+import { DialogProps } from "@radix-ui/react-dialog";
 import styled from "styled-components";
 
-interface DialogProps {
-  open: boolean;
-}
 export const DialogBackground = styled.section<DialogProps>`
   transition: 300ms;
   background-color: rgba(0, 0, 0, 0.3);

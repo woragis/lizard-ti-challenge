@@ -7,6 +7,7 @@ const Router = () => {
   const pages = pagesData.map(({ name, path, element }: PagesInterface) => {
     return <Route key={name} path={path} element={element} />;
   });
+
   return (
     <Routes>
       <Route key="layout" path="/" element={<Layout />}>

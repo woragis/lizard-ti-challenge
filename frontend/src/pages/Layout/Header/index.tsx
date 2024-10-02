@@ -3,6 +3,7 @@ import { useHeaderModel } from "./model";
 
 const Header = () => {
   const model = useHeaderModel();
+
   return <HeaderView {...model} />;
 };
 

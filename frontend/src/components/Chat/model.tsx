@@ -9,11 +9,13 @@ export const useChatModel = (_id: string) => {
     console.log(event.target.value);
     setInputText(event.target.value);
   };
+
   const submitGeminiPrompt = async (event: any) => {
     event.preventDefault();
     talkToGemini(_id, inputText);
     setInputText("");
   };
+
   return {
     chat,
     deleteDocument,

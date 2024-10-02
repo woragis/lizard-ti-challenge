@@ -6,12 +6,15 @@ export const useDocumentDialogModel = (
   open: boolean
 ) => {
   const [innerOpen, setOpen] = useState<boolean>(false);
+
   const openDialog = () => {
     setOpen(true);
   };
+
   const closeDialog = () => {
     setOpen(false);
   };
+
   return {
     open,
     innerOpen,

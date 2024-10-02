@@ -3,6 +3,7 @@ import { HomeView } from "./view";
 
 const Home = () => {
   const homeModel = useHome();
+
   return <HomeView {...homeModel} />;
 };
 

@@ -4,6 +4,7 @@ const GlobalStyles = createGlobalStyle`
   #root {
     width: 100%;
   }
+
   * {
     margin: 0;
     padding: 0;

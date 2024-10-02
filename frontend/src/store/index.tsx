@@ -27,6 +27,7 @@ const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [chat, setChat] = useState<ChatInterface[]>([]);
   const alertTime = 5000;
 
+  // Placeholder function to when a response is received inside some function
   const receiveResponse = (response: AlertMessageInterface) => {
     setResponse(null);
     setResponse(response);
@@ -34,6 +35,8 @@ const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
       setResponse(null);
     }, alertTime);
   };
+
+  // Placeholder function to when errors occur inside some function
   const receiveError = (response: AlertMessageInterface) => {
     setError(null);
     setError(response);
@@ -41,6 +44,7 @@ const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
       setError(null);
     }, alertTime);
   };
+
   const talkToGemini = async (_id: string, prompt: string) => {
     setChatLoading(true);
     if (chat.length === 0) {
@@ -189,9 +193,11 @@ const MyProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
 const useMyContext = () => {
   const context = useContext(MyContext);
+
   if (!context) {
     throw new Error("useMyContext must be used within a MyProvider");
   }
+
   return context;
 };
 

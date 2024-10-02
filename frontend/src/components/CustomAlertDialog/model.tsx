@@ -1,4 +1,5 @@
-type CustomAlertDialogVariantType = "default" | "destructive";
+import { CustomAlertDialogVariantType } from "@/types/components.type";
+
 export const useCustomAlertDialogModel = (
   title: string,
   message: string,
