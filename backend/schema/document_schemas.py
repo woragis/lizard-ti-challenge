@@ -1,5 +1,6 @@
 from models.document_models import Document
 
+# Define o padrao de envio de cada documento em formato json ao frontend
 def individual_serializer(document: Document) -> dict:
   return {
     "_id": str(document['_id']),
@@ -49,5 +50,6 @@ def individual_serializer(document: Document) -> dict:
       'data_do_documento': document['data_do_documento'],
   }
 
+# Define o padrao de envio de documentos quando for uma lista
 def list_serial(documents) -> list[Document]:
   return[individual_serializer(document) for document in documents]
